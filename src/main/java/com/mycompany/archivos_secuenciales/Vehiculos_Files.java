@@ -68,10 +68,6 @@ public class Vehiculos_Files {
         } catch (IOException ex) {
 
         }
-        /*if(aux!=null){
-           System.out.print("ID");
-           System.out.println(aux.getId_vehiculo()); 
-        }*/
 
         return aux;
     }

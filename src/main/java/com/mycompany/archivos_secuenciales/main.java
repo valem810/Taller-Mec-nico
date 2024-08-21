@@ -43,7 +43,7 @@ public class main extends javax.swing.JFrame {
     boolean ban_piezas = false;
 
     public main() throws IOException {
-        initComponents();
+        initComponents(); // Inicializa los componentes de la interfaz gráfica.
         f = new Files();
         pf = new piezas_File();
         rf = new reparaciones_File();
@@ -62,6 +62,7 @@ public class main extends javax.swing.JFrame {
         admin.setPassword("123");
         admin.setPerfil("Admin");
 
+        //Habilitamos y deshabilitamos botones
         btn_V_Guardar.setEnabled(false);
         btn_V_Nuevo.setEnabled(true);
         btn_V_Editar.setEnabled(false);
@@ -93,6 +94,7 @@ public class main extends javax.swing.JFrame {
         } catch (FileNotFoundException ex) {
 
         }
+         // Configuración de pestañas en la interfaz, deshabilitando algunas de ellas.
         tpane.setEnabledAt(1, false);
         tpane.setEnabledAt(2, false);
         tpane.setEnabledAt(3, false);
@@ -101,53 +103,62 @@ public class main extends javax.swing.JFrame {
 
     }
 
+    // Método que valida si una cadena solo contiene números.
     public boolean ValidaNum(String dato) {
         return dato.matches("[0-9]*");
     }
 
+    // Método para actualizar el combo box de selección de vehículos en la interfaz.
     public void cb_vehiculos() {
-        cb_V_SeleccioneCliente.removeAllItems();
-        cb_V_SeleccioneCliente.addItem("Seleccione");
-        String us = "", cl = "";
+        cb_V_SeleccioneCliente.removeAllItems();// Limpia todos los ítems del combo box.
+        cb_V_SeleccioneCliente.addItem("Seleccione");// Añade un ítem predeterminado.
+
+        String us = "", cl = "";// Variables para almacenar temporalmente los datos leídos.
         try {
-            read = new DataInputStream(new FileInputStream(path));
+            read = new DataInputStream(new FileInputStream(path));// Abre el archivo para lectura.
 
             while (true) {
-                us = read.readUTF();
-                cl = read.readUTF();
+                us = read.readUTF(); // Lee el ID de usuario del archivo.
+                cl = read.readUTF();// Lee el nombre del cliente del archivo.
+                // Si el ID de usuario leído coincide con el ID actual o si el ID es "0", añade el cliente al combo box.
                 if (us.equals(IdUs) || "0".equals(IdUs)) {
                     cb_V_SeleccioneCliente.addItem(cl);
                 }
             }
         } catch (FileNotFoundException ex) {
-
+            // Manejo de excepción si no se encuentra el archivo.
         } catch (IOException ex) {
-        }
+            // Manejo de otras excepciones de I/O.
+
+        }       
         try {
-            read.close();
+            read.close();// Cierra el flujo de entrada.
         } catch (IOException ex) {
-
+            // Manejo de excepción al cerrar el flujo de entrada.
         }
     }
 
     public void cb_R_vehiculos() {
-        String vl = "C:\\Proyecto\\vehiculos.txt";
-        cb_R_IdVehiculo.removeAllItems();
-        cb_R_IdVehiculo.addItem("Seleccione");
+        String vl = "C:\\Proyecto\\vehiculos.txt"; // Ruta del archivo que contiene los datos de los vehículos.
+
+        cb_R_IdVehiculo.removeAllItems();// Limpia todos los ítems del combo box.
+        cb_R_IdVehiculo.addItem("Seleccione"); // Añade un ítem predeterminado "Seleccione".
+        
+         // Declaración de variables para almacenar temporalmente los datos leídos del archivo.
         int id;
         String item = "", cl = "", mat = "", marc = "", mo = "", fe = "";
         try {
             read = new DataInputStream(new FileInputStream(vl));
             while (true) {
-                cl = read.readUTF();
-                id = read.readInt();
-                mat = read.readUTF();
-                marc = read.readUTF();
-                mo = read.readUTF();
-                fe = read.readUTF();
+               cl = read.readUTF(); // Lee el ID de cliente asociado al vehículo.
+               id = read.readInt(); // Lee el ID del vehículo.
+               mat = read.readUTF(); // Lee la matrícula del vehículo.
+               marc = read.readUTF(); // Lee la marca del vehículo.
+               mo = read.readUTF(); // Lee el modelo del vehículo.
+               fe = read.readUTF(); // Lee la fecha relacionada con el vehículo.
 
-                item = String.valueOf(id);
-                cb_R_IdVehiculo.addItem(item);
+                item = String.valueOf(id);// Convierte el ID del vehículo a una cadena de texto.
+                cb_R_IdVehiculo.addItem(item);// Añade el ID del vehículo al combo box.
             }
         } catch (FileNotFoundException ex) {
 
@@ -161,47 +172,63 @@ public class main extends javax.swing.JFrame {
     }
 
     public void cb_R_Pieza() {
-        String pz = "C:\\Proyecto\\piezas.txt";
-        cb_R_IdPieza.removeAllItems();
-        cb_R_IdPieza.addItem("Seleccione");
+        String pz = "C:\\Proyecto\\piezas.txt"; // Ruta del archivo que contiene los datos de las piezas.
+        cb_R_IdPieza.removeAllItems(); // Limpia todos los ítems del combo box.
+        cb_R_IdPieza.addItem("Seleccione"); // Añade un ítem predeterminado "Seleccione".
+
+        // Declaración de variables para almacenar temporalmente los datos leídos del archivo.
         int id = 0, stock = 0;
         String item = "", des = "";
-        try {
-            read = new DataInputStream(new FileInputStream(pz));
-            while (true) {
-                id = read.readInt();
-                des = read.readUTF();
-                stock = read.readInt();
 
-                item = String.valueOf(id);
-                cb_R_IdPieza.addItem(item);
+        try {
+            read = new DataInputStream(new FileInputStream(pz)); // Abre el archivo de piezas para lectura.
+
+            // Bucle que lee los datos de las piezas del archivo hasta que se alcance el final.
+            while (true) {
+                id = read.readInt(); // Lee el ID de la pieza.
+                des = read.readUTF(); // Lee la descripción de la pieza.
+                stock = read.readInt(); // Lee el stock de la pieza.
+
+                item = String.valueOf(id); // Convierte el ID de la pieza a una cadena de texto.
+                cb_R_IdPieza.addItem(item); // Añade el ID de la pieza al combo box.
             }
         } catch (FileNotFoundException ex) {
-
+            // Manejo de excepción si no se encuentra el archivo.
         } catch (IOException ex) {
+            // Manejo de excepciones de I/O, como el fin de archivo (EOFException).
         }
         try {
-            read.close();
+            read.close(); // Cierra el flujo de entrada después de leer todos los datos.
         } catch (IOException ex) {
-
+            // Manejo de excepción al cerrar el flujo de entrada.
         }
     }
+
 
     public boolean txt_R_Control() {
-        boolean ban = false;
-        try {
-            pi = new piezas();
-            pi.SetPiz(Integer.parseInt(cb_R_IdPieza.getSelectedItem().toString()));
-            pi = pf.BuscarPiezas(pi);
-            if (Integer.parseInt(txt_R_ControlPiezas.getText()) <= pi.getStock() && Integer.parseInt(txt_R_ControlPiezas.getText()) != 0) {
-                ban = true;
-            }
-
-        } catch (FileNotFoundException ex) {
+    boolean ban = false; // Bandera para determinar si el control de piezas es válido.
+    try {
+        pi = new piezas(); // Crea una nueva instancia de la clase `piezas`.
+        
+        // Establece el ID de la pieza seleccionada en el combo box `cb_R_IdPieza`.
+        pi.SetPiz(Integer.parseInt(cb_R_IdPieza.getSelectedItem().toString()));
+        
+        // Busca la pieza en el archivo utilizando el método `BuscarPiezas` de `piezas_File`.
+        pi = pf.BuscarPiezas(pi);
+        
+        // Verifica si la cantidad ingresada en `txt_R_ControlPiezas` es menor o igual al stock de la pieza
+        // y que la cantidad no sea igual a 0.
+        if (Integer.parseInt(txt_R_ControlPiezas.getText()) <= pi.getStock() && Integer.parseInt(txt_R_ControlPiezas.getText()) != 0) {
+            ban = true; // Si es válido, establece la bandera en `true`.
         }
-        return ban;
-    }
 
+    } catch (FileNotFoundException ex) {
+        // Manejo de excepción si no se encuentra el archivo.
+    }
+    return ban; // Retorna el valor de la bandera.
+}
+
+    //Funcion que habilita 
     public void Habilitar() {
         txtNombre.setEditable(true);
         txtPaterno.setEditable(true);
@@ -213,6 +240,7 @@ public class main extends javax.swing.JFrame {
         txtPsw.setEditable(true);
     }
 
+    //Funcion que deshabilita y borra texto
     public void Deshabilitar() {
         txtNombre.setEditable(false);
         txtPaterno.setEditable(false);
@@ -269,23 +297,30 @@ public class main extends javax.swing.JFrame {
     }
 
     public void Reparaciones_Deshabilitar() {
-        txt_R_Falla.setEditable(false);
-        jdt_E_Fecha.setEnabled(false);
-        jdt_S_Fecha.setEnabled(false);
+    // Deshabilita la edición del campo de texto para la descripción de la falla.
+    txt_R_Falla.setEditable(false);
+    
+    // Deshabilita la selección de fechas en los pickers de fecha de entrada y salida.
+    jdt_E_Fecha.setEnabled(false);
+    jdt_S_Fecha.setEnabled(false);
 
-        jdt_E_Fecha.setDate(null);
-        jdt_E_Fecha.cleanup();
+    // Limpia la fecha seleccionada en el picker de fecha de entrada y ejecuta limpieza adicional.
+    jdt_E_Fecha.setDate(null);
+    jdt_E_Fecha.cleanup();
 
-        jdt_S_Fecha.setDate(null);
-        jdt_S_Fecha.cleanup();
+    // Limpia la fecha seleccionada en el picker de fecha de salida y ejecuta limpieza adicional.
+    jdt_S_Fecha.setDate(null);
+    jdt_S_Fecha.cleanup();
 
-        int maxID = rf.getMax();
-        txt_R_IdReparacion.setText(String.valueOf(maxID));
+    // Obtiene el máximo ID de reparaciones y lo asigna al campo de texto correspondiente.
+    int maxID = rf.getMax();
+    txt_R_IdReparacion.setText(String.valueOf(maxID));
 
-        txt_R_Falla.setText("");
-        txt_R_IdReparacion.setText("");
-        txt_R_ControlPiezas.setText("");
-    }
+    // Limpia los campos de texto para la descripción de la falla, el ID de reparación y el control de piezas.
+    txt_R_Falla.setText("");
+    txt_R_IdReparacion.setText("");
+    txt_R_ControlPiezas.setText("");
+}
 
     public void Piezas_Deshabilitar() {
         txt_P_Descripcion.setEditable(false);

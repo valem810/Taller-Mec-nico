@@ -19,7 +19,6 @@ public class Files {
     
      Object [][] datos= new Object[9][100];
      Object [][] eliminar= new Object[9][100];
-    //private String path="archivo.txt";
      
      
     public int Id() throws FileNotFoundException{

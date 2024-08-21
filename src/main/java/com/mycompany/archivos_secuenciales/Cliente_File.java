@@ -87,7 +87,7 @@ public class Cliente_File {
         return maxId + 1; // Todos los IDs están asignados, asignar el siguiente número
     }
     
-
+    //Guarda los clientes al archivo clientes
     public void guardar(cliente cliente) {
         try {
             write = new DataOutputStream(new FileOutputStream(path, true));
@@ -111,7 +111,7 @@ public class Cliente_File {
             
             while (true) {
                 int us =read.readInt();
-                int idCliente = read.readInt();
+                int idCliente = read.readInt();//Se va a buscar el cliente con el id que le pasamos, comparando todos los atributos encontrados con los que queremos.
                 String nombre = read.readUTF();
                 String apellidoPaterno = read.readUTF();
                 String apellidoMaterno = read.readUTF();
